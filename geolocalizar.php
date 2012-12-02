@@ -80,6 +80,11 @@
 					nLng = g+String.fromCharCode(176)+' '+m+'\' '+s.toFixed(3)+'\'\''+NS;
 				}catch(e){}
 				
+				try{
+					 var url = "coord.php?lat="+event.latLng.lat()+"&lng="+event.latLng.lng();
+					 $("#coord").load(url);
+				}catch(e){}
+				
 				parent.document.getElementById('markerLat').value = event.latLng.lat();
                 parent.document.getElementById('markerLng').value = event.latLng.lng();
 				parent.document.getElementById('geoPos').innerHTML = nLat+"     "+nLng;
@@ -122,6 +127,7 @@
     </script>
   </head>
   <body>
+    <div id="coord"></div> 
     <div id="map_canvas"></div>
   </body>
 </html>

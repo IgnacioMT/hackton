@@ -22,8 +22,7 @@
 			$consulta = mysql_query($sql);
 			validar_consulta($consulta);
 		}
-	   
-	   
+   
 ?>
 <?php if(isset($connection)){ mysql_close($connection); } ?>
 <?php ob_end_flush(); ?>

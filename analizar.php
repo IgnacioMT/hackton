@@ -12,11 +12,6 @@
 	<script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/funciones.js"></script>
 	
-	<!--script type="text/javascript"> 
-	  $(window).load(function(){$('#cr-container').crotator(); document.getElementById("an").style.top = (pixelesDisponiblesY()-80) + 'px'; }); 
-	  $(window).resize(function(){document.getElementById("an").style.top = (pixelesDisponiblesY()-80) + 'px'; }); 
-      <a href="#" onclick="$('#caja').slideUp();">SlideUp</a>
-    </script-->
     <script>
 	   function close_popBox() { /*$("#popBox_content").html('');*/ $("#popBoxBG").fadeOut(500); $("#popBox").fadeOut(500); }
 	   function popBox(w,h){
@@ -158,8 +153,8 @@
                         
               </div>
               
-              <div style="clear:both; margin-top:30px; height:250px; width:950px; margin:20px 0 10px 0; ">
-              		<img src="images/comofun.png" />
+              <div style="clear:both; text-align:left; margin-top:30px; height:150px; width:950px; margin:20px 0 10px 0; ">
+              		<img src="images/resultados.png" />
               </div>
               
               <!----------Caja 1----------> 
@@ -169,11 +164,18 @@
                      <div style="color:#eee; text-shadow:#000 1px 1px 5px; width:380px; line-height:34px; vertical-align:middle;" class="georgiaIt12 titBusq" > 
                      		1. &iquest;A qu&eacute; quisieras dedicarte?
                      </div>
-                     <form action="analizar.php" method="post" >
+                     <form onsubmit="cargarResultados(); return false;" >
                      	
-                        <input class="inputBusq" id="buscar" name="buscar" x-webkit-speech type="search" style="width:250px;" />
+                        <input class="inputBusq" id="buscar" name="buscar" x-webkit-speech type="search" 
+                        	  value="<?php if(!empty($_GET["buscar"])) echo $_GET["buscar"]; else if(!empty($_POST["buscar"])) echo $_POST["buscar"]; ?>" style="width:250px;" />
                         
-                        <select class="selectBusq" id="cajaSeleccionar" onchange="seleccionar()" >
+                        <script>
+							function seleccionar()
+							{ 
+								$("#buscar").val(document.getElementById('cajaSeleccionar').value);
+							}
+						</script>
+                        <select class="selectBusq" id="cajaSeleccionar" >
                         <?php
 						
                         $input = $buscar;
@@ -226,21 +228,14 @@
 						{
 							if($cont!=0) echo ", ";
 							$cont++;
-							echo "<option>".ucfirst(strtolower(utf8_encode($val)))."</option>";
+							echo "<option>".ucfirst(strtolower($val))."</option>";
 						}
 						
                         ?>
 
                         </select>
                         
-                        <script>
-							function seleccionar()
-							{ 
-								$("#buscar").val(document.getElementById('cajaSeleccionar').value);
-							}
-						</script>
-                     
-                        <input class="botonBusq" type="submit" value="Buscar" />
+                        <input class="botonBusq" type="button" value="Buscar" onclick="cargarResultados();" />
                         
                      </form>
                      
@@ -271,20 +266,29 @@
 							document.getElementById('geolocalizar').src = '';
 							document.getElementById('geolocalizar').src = url2;
 						}
+						
 					 </script>
                      
-                     <iframe id="geolocalizar" src="geolocalizar.php" scrolling="no" frameborder="0" style="border:0; margin-top:15px; width:950px; height:250px;"></iframe>
-                     
-                     <div style="color:#eee; font-size:12px; height:17px; padding:5px;">
-                     	Su ubicaci&oacute;n actual se determina autom&aacute;ticamente, pero puede corregirla arrastrando el marcador a cualquier parte del mapa.
+                     <div style="clear:both; text-align:left;">
+                     	<a class="enlaceBlanco" href="javascript:$('#mapaDir').slideToggle();"> Ver/ocultar el mapa de geolocalizaci&oacute;n asistida. </a>
                      </div>
-                     <div id="geoPos" style="color:#fff; font-size:12px; height:17px; padding:5px;">16° 30' 19.393'' S 68° 7' 36.242'' O</div>
                      
-                     <input type='text' id='markerLat' value='' />
-                     <input type='text' id='markerLng' value='' />
+                     <div id="mapaDir" style="display:none;" >
                      
-                     <div id="geoPos2" style="color:#fff; font-size:12px; height:17px; padding:5px;"></div>
-                     
+                         <iframe id="geolocalizar" src="geolocalizar.php" scrolling="no" frameborder="0" style="border:0; margin-top:15px; width:950px; height:250px;"></iframe>
+                         
+                         <div style="color:#eee; font-size:12px; height:17px; padding:5px;">
+                            Su ubicaci&oacute;n actual se determina autom&aacute;ticamente, pero puede corregirla arrastrando el marcador a cualquier parte del mapa.
+                         </div>
+                         <div id="geoPos" style="color:#fff; font-size:12px; height:17px; padding:5px;"></div>
+                         
+                         <input type='text' id='markerLat' value='' />
+                         <input type='text' id='markerLng' value='' />
+                         
+                         <div id="geoPos2" style="color:#fff; font-size:12px; height:17px; padding:5px;"></div>
+                         
+                     </div>    
+                                             
               </div>
               
               <!------fin caja 2----------> 
@@ -294,14 +298,9 @@
                      <div style="color:#eee; text-shadow:#000 1px 1px 5px; width:380px; line-height:34px; vertical-align:middle;" class="georgiaIt12 titBusq" > 
                      		3. &iquest;Voy a tener suerte?
                      </div>
-                     <form action="analizar.php" onsubmit="cargarResul()" method="post" >
-                  	 	<input type='hidden' id='buscar2' name="buscar" value='' />
-                        <input class="botonBusq" type="submit" value="Analizar mis oportunidades ahora!" style="width:400px;" />
+                     <form onsubmit="cargarResultados(); return false;" >
+                  	 	<input class="botonBusq" type="button" value="Analizar mis oportunidades ahora!" style="width:400px;" onclick="cargarResultados();" />
                      </form>
-                     
-                     <script>
-					 	function cargarResul(){ document.getElementById('buscar2').value = $("#buscar").val(); }
-					 </script>
               </div>
               
               <!------fin caja 3----------> 
@@ -326,18 +325,86 @@
 				  }
 			  </script>
               
-             <!----aqui-era-la-busqueda---------------->
+             <!----------------------------------------------------------------------------------------------------------------------->
+              <div id="resultados" style="clear:both; margin:40px 0 30px 0; min-height:500px; width:960px; padding-left:10px;">
+              		
+                    <!--1------------------------------------->
+                    
+                    <div id="cargando1" style="display:none;">
+                    	<div class="animCargando"></div>
+                        <img src="images/cargando_texto.png" />
+                    </div>
+                    <div id="cargarContenido1"></div>
+                    <div style="clear:both;"></div>
+                    
+                    <!--2-------------------------------------->
+                    
+                    <div id="cargando2" style="display:none;"></div>
+                    <div id="cargarContenido2"></div>
+                    <div style="clear:both;"></div>
+                    
+                    <!--3-------------------------------------->
+                    
+                    <div id="cargando3" style="display:none;"></div>
+                    <div id="cargarContenido3"></div>
+                    <div style="clear:both;"></div>
+                    
+                    <!---------------------------------------->
+                    
+              </div>
+             
+                <?php header("Content-Type: text/html; charset=iso-8859-1"); ?> 
+                         
+				<script>
+                    function cargarResultados()
+                    {
+                        var url1 = "php_scripts/busq_emp.php?id=1&buscar="+encodeURI($("#buscar").val()) + "&r=" + Math.random()*99999;
+                
+                        $('#cargarContenido1').slideUp(250, function(){ 
+                            $('#cargando1').slideDown(250);
+                            try{ $('html,body').animate({ scrollTop: ($("#resultados").offset().top-35) }, 600); }catch(e){}
+                            $('#cargarContenido1').load(url1, function(){ 
+                                try{ $('html,body').animate({ scrollTop: ($("#resultados").offset().top-35) }, 600); }catch(e){}
+                                $('#cargando1').delay(1000).slideUp(250, function(){ 
+                                    $('#cargarContenido1').slideDown(600);
+                                }); 
+                            })
+                        });
+						
+						var url2 = "php_scripts/busq_emp.php?id=2&buscar="+encodeURI($("#buscar").val()) + "&r=" + Math.random()*99999;
+                        $('#cargarContenido2').slideUp(250, function(){ 
+                            $('#cargando2').slideDown(250);
+                            $('#cargarContenido2').load(url2, function(){ 
+                                $('#cargando2').delay(1000).slideUp(250, function(){ 
+                                    $('#cargarContenido2').slideDown(600);
+                                }); 
+                            })
+                        });
+						
+						var url3 = "php_scripts/busq_emp.php?id=3&buscar="+encodeURI($("#buscar").val()) + "&r=" + Math.random()*99999;
+                        $('#cargarContenido3').slideUp(250, function(){ 
+                            $('#cargando3').slideDown(250);
+                            $('#cargarContenido3').load(url3, function(){ 
+                                $('#cargando3').delay(1000).slideUp(250, function(){ 
+                                    $('#cargarContenido3').slideDown(600);
+                                }); 
+                            })
+                        });
+                        
+                    }
+                </script>
+              <!----------------------------------------------------------------------------------------------------------------------->
               
               
-            <div id="popBoxBG" class="anularBg" ></div>
-            <div id="popBox" class="popBox" >
+             <div id="popBoxBG" class="anularBg" ></div>
+             <div id="popBox" class="popBox" >
                 <div onclick="close_popBox()" class="cerrarPopBox" ></div>
                 <div id="popBox_content" style="margin:10px; overflow:hidden;">
                 	<iframe id="ifr" src="" frameborder="0" style="border:0; border-radius:10px; width:1008px; float:left; height:675px;" scrolling="no" ></iframe>
                 </div>
-            </div>
+             </div>
               
-              <!----------------------------------------------------------------------------------------------------------------------->
+             <!----------------------------------------------------------------------------------------------------------------------->
               
              <div style="clear:both; float:right; text-align:right; font-size:12px; color:#555; padding:30px;">
                 Blackout<br />
@@ -356,7 +423,9 @@
         
    </center>
 </body>
-
+	<?php if(isset($_POST["buscar"])){ ?>
+		<script> cargarResultados(); </script>
+    <?php } ?>
 </html>
 <?php
   //if($_SESSION["url"]!=get_url()) $_SESSION["url"] = get_url();

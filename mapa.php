@@ -56,43 +56,21 @@
 				map.fitBounds(results[0].geometry.viewport);
 				// Dibujamos un marcador con la ubicación del primer resultado obtenido
 						
-				var markerOptions = { <?php if($_GET["d"]==1) echo " draggable: true, "; ?> position: results[0].geometry.location; }
-				
+				var markerOptions = { draggable: true, position: results[0].geometry.location };
 				marker = new google.maps.Marker(markerOptions);
+				marker.setMap(map);
 				
-				<?php if($_GET["d"]==1) { ?>
+				try{
 					parent.document.getElementById('markerLat').value = results[0].geometry.location.lat();
                 	parent.document.getElementById('markerLng').value = results[0].geometry.location.lng();
 					
 					google.maps.event.addListener(marker, 'dragend', function(event){
-						
-						   try{
-								lat = Math.abs(event.latLng.lat());
-								lng = Math.abs(event.latLng.lng());
-							}catch(e){}
-							try{
-								g = truncate(lat); 
-								m = Math.abs(truncate((lat-g)*60));
-								s = (Math.abs(lat-g)*60-m)*60;
-								NS = (event.latLng.lat()<0)? ' S' : ' N';
-								nLat = g+String.fromCharCode(176)+' '+m+'\' '+s.toFixed(3)+'\'\''+NS;
-							}catch(e){}
-							try{
-								g = truncate(lng); 
-								m = Math.abs(truncate((lng-g)*60));
-								s = (Math.abs(lng-g)*60-m)*60;
-								NS = (event.latLng.lng()<0)? ' O' : ' E';
-								nLng = g+String.fromCharCode(176)+' '+m+'\' '+s.toFixed(3)+'\'\''+NS;
-							}catch(e){}
-							
-							parent.document.getElementById('markerLat').value = event.latLng.lat();
-							parent.document.getElementById('markerLng').value = event.latLng.lng();
+					    parent.document.getElementById('markerLat').value = event.latLng.lat();
+					    parent.document.getElementById('markerLng').value = event.latLng.lng();
 					});
-				<?php } ?>
+				}catch(e){};
 
 			} else {
-				// En caso de no haber resultados o que haya ocurrido un error
-				// lanzamos un mensaje con el error
 				alert("Ups! Lo sentimos pero no pudimos localizar la zona de la empresa requerida.");
 			}
 		}

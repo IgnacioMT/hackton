@@ -38,8 +38,8 @@ a.deNegroARojoOver:hover{ color:#bc0000; }
 	margin:10px; 
 	width:215px; 
 	min-height:250px; 
-	border-radius:5px; 
-	box-shadow:#666 1px 1px 5px; 
+	border-radius:2px; 
+	box-shadow:#666 1px 1px 3px; 
 	overflow:hidden;
 	
 	background: #ffffff; /* Old browsers */
@@ -207,4 +207,40 @@ a.deNegroARojoOver:hover{ color:#bc0000; }
 	text-align:center;
 	line-height:270px;
 	vertical-align: middle;
+}
+
+.enlaceBlanco
+{
+	color:#fff;
+	text-decoration:none;
+}
+
+.enlaceBlanco:hover
+{	
+	text-decoration: underline;
+}
+
+.cajaResTit
+{
+	padding:15px 10px 15px 10px; 
+	background-color:#222; 
+	color:#fff; 
+	text-align:center;
+	
+	background-image: url(../images/bglineas2.png);
+	background-position:-10px -100px; 
+	background-repeat:no-repeat;
+}
+
+.cajaResSubTit
+{
+	padding:10px; 
+	/*background-color:#bc0000; */
+	color:#bc0000;
+	text-align:left;
+	font-size:12px;
+	
+	background-image: url(../images/bglineas2.png);
+	background-position:-150px -120px; 
+	background-repeat:no-repeat;
 }
