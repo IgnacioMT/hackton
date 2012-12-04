@@ -104,11 +104,27 @@
           // Browser doesn't support Geolocation
           handleNoGeolocation(false);
         }
+		
       }
-
-      function handleNoGeolocation(errorFlag) {
+	  
+	  function handleNoGeolocation(errorFlag) {
         if (errorFlag) {
-          var content = 'Error: El servicio de geolocalización falló.';
+          //var content = 'Error: El servicio de geolocalización falló.';
+		  	  window.setTimeout(function() {
+				  var pos = new google.maps.LatLng(-16.505545540736644, -68.12635694973756);						 
+				  
+				  infowindow.setMap(null);
+			      infowindow = new google.maps.InfoWindow({
+					  map: map,
+              		  position: pos,
+              	      content: '<div class="marker"><span class="rojo">Usted se encuentra aqui!!</span> <span class="verdana12 plomo">Esta ubicación se utilizará para el análisis de oportunidades.</span></div>'
+                  });
+				  
+				  map.setCenter(pos);
+				  map.setZoom(17);
+				  google.maps.event.clearListeners(map, 'zoom_changed');
+			  }, 3000);
+		  
         } else {
           var content = 'Error: Su navegador no soporta esta tecnología.';
         }
@@ -124,6 +140,9 @@
       }
 
       google.maps.event.addDomListener(window, 'load', initialize);
+	  
+	  
+	  
     </script>
   </head>
   <body>
