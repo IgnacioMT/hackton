@@ -153,11 +153,12 @@
                         
               </div>
               
-              <div style="clear:both; text-align:left; margin-top:30px; height:150px; width:950px; margin:20px 0 10px 0; ">
-              		<img src="images/resultados.png" />
+              <div style="clear:both; text-align:left; margin-top:30px; width:950px; margin:20px 0 10px 0; ">
+              	  <h1 style="font-family:Georgia, 'Times New Roman', Times, serif; font-style:italic;">
+				  	<?php if(isset($_POST["competitivo"])) echo "Analisis Competitivo"; ?>
+              	  	<?php if(isset($_POST["informativo"])) echo "Analisis Informativo"; ?>
+                  </h1>
               </div>
-              
-              <?php if(isset()) echo $_POST[""]; ?>
               
               <!----------Caja 1----------> 
               <form onsubmit="cargarResultados(); return false;" >
