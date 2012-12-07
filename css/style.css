@@ -19,6 +19,22 @@ a{
 	text-decoration: none;
 }
 
+.bt_opciones
+{
+	background-image:url(../images/bt_opciones.png);
+	background-repeat: no-repeat;
+	width: 30px;
+	height: 30px;
+	background-position:left top;
+	cursor:pointer;
+}
+
+.bt_opciones:hover
+{
+	background-position:right top;
+}
+
+
 a.deNegroARojoOver{ color:#000; }
 a.deNegroARojoOver:hover{ color:#bc0000; }
 

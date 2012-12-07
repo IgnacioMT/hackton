@@ -22,3 +22,30 @@ function pixelesDisponiblesX() {
 	}
 	return myWidth;
 }
+
+function truncate(n) { return n|0; }
+function convertir_coordenadas(LAT, LNG)
+{
+	var nLat = '', nLng = '';
+	var lat, lng;
+	try{
+		lat = Math.abs(LAT);
+		lng = Math.abs(LNG);
+	}catch(e){}
+	try{
+		g = truncate(lat); 
+		m = Math.abs(truncate((lat-g)*60));
+		s = (Math.abs(lat-g)*60-m)*60;
+		NS = (LAT<0)? ' S' : ' N';
+		nLat = g+String.fromCharCode(176)+' '+m+'\' '+s.toFixed(3)+'\'\''+NS;
+	}catch(e){}
+	try{
+		g = truncate(lng); 
+		m = Math.abs(truncate((lng-g)*60));
+		s = (Math.abs(lng-g)*60-m)*60;
+		NS = (LNG<0)? ' O' : ' E';
+		nLng = g+String.fromCharCode(176)+' '+m+'\' '+s.toFixed(3)+'\'\''+NS;
+	}catch(e){}
+	
+	return nLat + "   " + nLng;
+}

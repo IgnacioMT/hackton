@@ -41,7 +41,7 @@
    <center>
        <div class="cajaPrincipal" >
               
-              <img src="images/logo.png" style="float:left; margin:-42px 0 0 -25px;" />
+              <img src="images/logo2.png" style="float:left; margin:-46px 0 0 -38px;" />
               
               <div style="float:right; background-image: url(images/bglineas2.png); background-position:-10px -100px; background-repeat:no-repeat; text-align:left; background-color:#222; padding:20px 20px 20px 30px; margin-bottom:40px; color:#999; position:relative; z-index:9999;">
                     
@@ -157,17 +157,19 @@
               		<img src="images/resultados.png" />
               </div>
               
+              <?php if(isset()) echo $_POST[""]; ?>
+              
               <!----------Caja 1----------> 
+              <form onsubmit="cargarResultados(); return false;" >
               
               <div class="cajaPregunta" >
                      
                      <div style="color:#eee; text-shadow:#000 1px 1px 5px; width:380px; line-height:34px; vertical-align:middle;" class="georgiaIt12 titBusq" > 
                      		1. &iquest;A qu&eacute; quisieras dedicarte?
                      </div>
-                     <form onsubmit="cargarResultados(); return false;" >
+                     
                      	
-                        <input class="inputBusq" id="buscar" name="buscar" x-webkit-speech type="search" 
-                        	  value="<?php if(!empty($_GET["buscar"])) echo $_GET["buscar"]; else if(!empty($_POST["buscar"])) echo $_POST["buscar"]; ?>" style="width:250px;" />
+                        <input class="inputBusq" id="buscar" name="buscar" x-webkit-speech type="search"  value="<?php if(!empty($_POST["buscar"])) echo $_POST["buscar"]; ?>" style="width:250px;" />
                         
                         <script>
 							function seleccionar()
@@ -236,11 +238,9 @@
                         </select>
                         
                         <input class="botonBusq" type="button" value="Buscar" onclick="cargarResultados();" />
-                        
-                     </form>
                      
                      <div style="color:#eee; font-size:12px; height:17px; padding:5px;">
-                     	Introduce una actividad o un rubro, como por ejemplo. Salud, Educaci&oacute;n, Transporte, etc...
+                     	Incluye palabras clave que desearias incluir en la b&uacute;squeda, como por ejemplo: Salud, Educaci&oacute;n, Transporte, Universidad, etc...
                      </div>
                      
               </div>
@@ -248,48 +248,7 @@
               <!------fin caja 1----------> 
               <!----------Caja 2----------> 
               
-              <div class="cajaPregunta2" >
-                     
-                     <div style="color:#eee; text-shadow:#000 1px 1px 5px; width:380px; line-height:34px; vertical-align:middle;" class="georgiaIt12 titBusq" > 
-                     		2. &iquest;Alguna direcci&oacute;n en especial?
-                     </div>
-                     <form onsubmit="cargarDireccion(); return false;" >
-                     	<input class="inputBusq" id="buscarDir" name="buscarDir" x-webkit-speech type="search" />
-                  	 	<input class="botonBusq" type="button" value="Buscar" onclick="cargarDireccion();" />
-                     </form>
-                     
-                     <script>
-					 	function cargarDireccion()
-						{
-							var url = 'mapa.php?d=1&dir='+$("#buscarDir").val()+', La Paz, La Paz, Bolivia';
-							var url2 = url + '&r=' + Math.random()*99999;
-							document.getElementById('geolocalizar').src = '';
-							document.getElementById('geolocalizar').src = url2;
-						}
-						
-					 </script>
-                     
-                     <div style="clear:both; text-align:left;">
-                     	<a class="enlaceBlanco" href="javascript:$('#mapaDir').slideToggle();"> Ver/ocultar el mapa de geolocalizaci&oacute;n asistida. </a>
-                     </div>
-                     
-                     <div id="mapaDir" style="display:none;" >
-                     
-                         <iframe id="geolocalizar" src="geolocalizar.php" scrolling="no" frameborder="0" style="border:0; margin-top:15px; width:950px; height:250px;"></iframe>
-                         
-                         <div style="color:#eee; font-size:12px; height:17px; padding:5px;">
-                            Su ubicaci&oacute;n actual se determina autom&aacute;ticamente, pero puede corregirla arrastrando el marcador a cualquier parte del mapa.
-                         </div>
-                         <div id="geoPos" style="color:#fff; font-size:12px; height:17px; padding:5px;"></div>
-                         
-                         <input type='text' id='markerLat' value='' />
-                         <input type='text' id='markerLng' value='' />
-                         
-                         <div id="geoPos2" style="color:#fff; font-size:12px; height:17px; padding:5px;"></div>
-                         
-                     </div>    
-                                             
-              </div>
+              <?php include("php_scripts/filtro_caja2.php"); ?>
               
               <!------fin caja 2----------> 
               <!----------Caja 3----------> 
@@ -298,11 +257,12 @@
                      <div style="color:#eee; text-shadow:#000 1px 1px 5px; width:380px; line-height:34px; vertical-align:middle;" class="georgiaIt12 titBusq" > 
                      		3. &iquest;Voy a tener suerte?
                      </div>
-                     <form onsubmit="cargarResultados(); return false;" >
-                  	 	<input class="botonBusq" type="button" value="Analizar mis oportunidades ahora!" style="width:400px;" onclick="cargarResultados();" />
-                     </form>
+                  	 
+                     <input class="botonBusq" type="button" value="Analizar mis oportunidades ahora!" style="width:400px;" onclick="cargarResultados();" />
+                     
               </div>
               
+              </form>
               <!------fin caja 3----------> 
               
               
@@ -328,6 +288,10 @@
              <!----------------------------------------------------------------------------------------------------------------------->
               <div id="resultados" style="clear:both; margin:40px 0 30px 0; min-height:500px; width:960px; padding-left:10px;">
               		
+                    <div style="clear:both; text-align:left; margin-top:30px; height:150px; width:950px; margin:20px 0 10px 0; ">
+                        <img src="images/resultados.png" />
+                   </div>
+                    
                     <!--1------------------------------------->
                     
                     <div id="cargando1" style="display:none;">
@@ -358,7 +322,8 @@
 				<script>
                     function cargarResultados()
                     {
-                        var url1 = "php_scripts/busq_emp.php?id=1&buscar="+encodeURI($("#buscar").val()) + "&r=" + Math.random()*99999;
+                        cargarDireccion();
+						var url1 = "php_scripts/busq_emp.php?id=1&buscar="+encodeURI($("#buscar").val()) + "&r=" + Math.random()*99999;
                 
                         $('#cargarContenido1').slideUp(250, function(){ 
                             $('#cargando1').slideDown(250);

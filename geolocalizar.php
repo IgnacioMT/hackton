@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Google Maps JavaScript API v3 Example: Map Geolocation</title>
+    <title>Geolocalizar</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <script type="text/javascript" src="js/funciones.js"></script>
+    
     <meta charset="utf-8">
     <link href="https://google-developers.appspot.com/maps/documentation/javascript/examples/default.css" rel="stylesheet">
     <style>
@@ -22,128 +24,119 @@
 
     <script>
       var map;
+	  var infowindow = new google.maps.InfoWindow({});
+	  var imgMarcador = new google.maps.MarkerImage('http://blackoutdal.net23.net/images/map/marcador.png', 
+	  				    new google.maps.Size(28, 40), new google.maps.Point(0,0), new google.maps.Point(14, 40));
+	  var imgSombra   = new google.maps.MarkerImage('http://blackoutdal.net23.net/images/map/sombra.png', 
+				        new google.maps.Size(106, 83), new google.maps.Point(0,0), new google.maps.Point(36, 51));
+	  
 
-      function initialize() {
-        var mapOptions = {
-          zoom: 16,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        map = new google.maps.Map(document.getElementById('map_canvas'),
-            mapOptions);
+      function initialize() 
+	  {
+          var mapOptions = { zoom: 16, mapTypeId: google.maps.MapTypeId.ROADMAP };
+          map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+          if(navigator.geolocation){ navigator.geolocation.getCurrentPosition(function(position)
+		  {	  
+              var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+              infowindow = new google.maps.InfoWindow({
+                map: map,
+                position: pos,
+                content: '<div class="marker"><span class="rojo">Usted se encuentra aqui!</span> <span class="verdana12 plomo">Esta ubicación se utilizará en la etapa de análisis.</span></div>'
+              });
 
-        // Try HTML5 geolocation
-        if(navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = new google.maps.LatLng(position.coords.latitude,
-                                             position.coords.longitude);
-
-            var infowindow = new google.maps.InfoWindow({
-              map: map,
-              position: pos,
-              content: '<div class="marker"><span class="rojo">Usted se encuentra aqui!</span> <span class="verdana12 plomo">Esta ubicación se utilizará para el análisis de oportunidades.</span></div>'
-            });
-
-			var marker = new google.maps.Marker({
-				position: pos,
-				map: map,
-				draggable: true,
-				title: 'Su ubicacion'
-			});
+			  var marker = new google.maps.Marker({
+				 position: pos,
+				 map: map,
+				 icon: imgMarcador, 
+				 shadow: imgSombra,
+				 draggable: true,
+				 title: 'Su ubicacion'
+			  });
 			
-			function truncate(n) { return n|0; }
-			google.maps.event.addListener(marker, 'dragend', function(event) {
+			  google.maps.event.addListener(marker, 'dragend', function(event)
+			  {				
+				  setInfoWindow('Usted se encuentra aqui!','Esta ubicación se utilizará en la etapa de análisis.',event);							
+				  try{
+					   var url = "coord.php?lat="+event.latLng.lat()+"&lng="+event.latLng.lng();
+					   $("#coord").load(url);
+				  }catch(e){}
 				
-			  infowindow.setMap(null);
-			  var pos = new google.maps.LatLng(event.latLng.lat(),event.latLng.lng());
-			  infowindow = new google.maps.InfoWindow({
-              map: map,
-              position: pos,
-              content: '<div class="marker"><span class="rojo">Usted se encuentra aqui!</span> <span class="verdana12 plomo">Esta ubicación se utilizará para el análisis de oportunidades.</span></div>'
-            });
-			
-				try{
-					lat = Math.abs(event.latLng.lat());
-					lng = Math.abs(event.latLng.lng());
-				}catch(e){}
-				try{
-					g = truncate(lat); 
-					m = Math.abs(truncate((lat-g)*60));
-					s = (Math.abs(lat-g)*60-m)*60;
-					NS = (event.latLng.lat()<0)? ' S' : ' N';
-					nLat = g+String.fromCharCode(176)+' '+m+'\' '+s.toFixed(3)+'\'\''+NS;
-				}catch(e){}
-				try{
-					g = truncate(lng); 
-					m = Math.abs(truncate((lng-g)*60));
-					s = (Math.abs(lng-g)*60-m)*60;
-					NS = (event.latLng.lng()<0)? ' O' : ' E';
-					nLng = g+String.fromCharCode(176)+' '+m+'\' '+s.toFixed(3)+'\'\''+NS;
-				}catch(e){}
-				
-				try{
-					 var url = "coord.php?lat="+event.latLng.lat()+"&lng="+event.latLng.lng();
-					 $("#coord").load(url);
-				}catch(e){}
-				
-				parent.document.getElementById('markerLat').value = event.latLng.lat();
-                parent.document.getElementById('markerLng').value = event.latLng.lng();
-				parent.document.getElementById('geoPos').innerHTML = nLat+"     "+nLng;
-				
-				var p = trunc(event.latLng.lat()*1000)/1000;
-				p += "  ";
-				p += (trunc(event.latLng.lng()*1000)/1000);
-				parent.document.getElementById('geoPos2').innerHTML = p;
-				
-			});
-			
-            map.setCenter(pos);
-          }, function() {
-            handleNoGeolocation(true);
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleNoGeolocation(false);
-        }
+				  parent.document.getElementById('markerLat').value = event.latLng.lat();
+                  parent.document.getElementById('markerLng').value = event.latLng.lng();
+				  parent.document.getElementById('geoPos').innerHTML = convertir_coordenadas(event.latLng.lat(),event.latLng.lng());			
+			  });			
+              map.setCenter(pos);
+		}, function(){ handleNoGeolocation(true); });
+        } else { /*Browser doesn't support Geolocation*/ handleNoGeolocation(false); }
 		
       }
 	  
+	  function setInfoWindow(titulo, texto, event)
+	  {
+		  var pos;
+		  
+		  infowindow.setMap(null);
+		  if(event==null) pos = new google.maps.LatLng(-16.505545540736644, -68.12635694973756); //coordenadas por defecto  
+		  else pos = new google.maps.LatLng(event.latLng.lat(),event.latLng.lng());
+		  
+		  infowindow = new google.maps.InfoWindow({
+			  map: map,
+			  position: pos,
+			  content: '<div class="marker"><span class="rojo">'+titulo+'</span> <span class="verdana12 plomo">'+texto+'</span></div>'
+		  });
+	  }
+	  
 	  function handleNoGeolocation(errorFlag) {
         if (errorFlag) {
-          //var content = 'Error: El servicio de geolocalización falló.';
 		  	  window.setTimeout(function() {
-				  var pos = new google.maps.LatLng(-16.505545540736644, -68.12635694973756);						 
 				  
-				  infowindow.setMap(null);
-			      infowindow = new google.maps.InfoWindow({
-					  map: map,
-              		  position: pos,
-              	      content: '<div class="marker"><span class="rojo">Usted se encuentra aqui!!</span> <span class="verdana12 plomo">Esta ubicación se utilizará para el análisis de oportunidades.</span></div>'
-                  });
+				  setInfoWindow('Ups! no logramos geolocalizarlo!','<br />Arrastre el marcador hasta la ubicación de su preferencia.',null);
 				  
+				  pos = new google.maps.LatLng(-16.505545540736644, -68.12635694973756); //coordenadas por defecto  
+				  var marker = new google.maps.Marker({
+						position: pos,
+						map: map,
+						icon: imgMarcador, 
+						shadow: imgSombra,
+						draggable: true,
+						title: 'Su ubicacion'
+				  });
+				  marker.setMap(map);
+					
+				  google.maps.event.addListener(marker, 'dragend', function(event)
+				  {
+					  parent.document.getElementById('markerLat').value = event.latLng.lat();
+					  parent.document.getElementById('markerLng').value = event.latLng.lng();
+					  parent.document.getElementById('geoPos').innerHTML = convertir_coordenadas(event.latLng.lat(),event.latLng.lng());
+					  
+					  setInfoWindow('Usted se encuentra aqui!','Esta ubicación se utilizará en la etapa de análisis.',event);
+					  //guardar en $_session		
+					  try{ var url = "coord.php?lat="+event.latLng.lat()+"&lng="+event.latLng.lng(); $("#coord").load(url); }catch(e){}				
+				  });
+				
+						  
 				  map.setCenter(pos);
-				  map.setZoom(17);
-				  google.maps.event.clearListeners(map, 'zoom_changed');
-			  }, 3000);
+				  map.setZoom(16);
+				  
+			  }, 2000);
 		  
         } else {
           var content = 'Error: Su navegador no soporta esta tecnología.';
         }
 
         var options = {
-          map: map,
-          position: new google.maps.LatLng(60, 105),
-          content: content
+            map: map,
+            position: new google.maps.LatLng(60, 105),
+            content: content
         };
-
         var infowindow = new google.maps.InfoWindow(options);
         map.setCenter(options.position);
+		
       }
 
       google.maps.event.addDomListener(window, 'load', initialize);
 	  
-	  
-	  
-    </script>
+  </script>
   </head>
   <body>
     <div id="coord"></div> 

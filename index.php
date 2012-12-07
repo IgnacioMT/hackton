@@ -46,7 +46,7 @@
    <center>
        <div class="cajaPrincipal" >
               
-              <img src="images/logo.png" style="float:left; margin:-42px 0 0 -25px;" />
+              <img src="images/logo2.png" style="float:left; margin:-46px 0 0 -38px;" />
               
               <div style="float:right; background-image: url(images/bglineas2.png); background-position:-10px -100px; background-repeat:no-repeat; text-align:left; background-color:#222; padding:20px 20px 20px 30px; margin-bottom:40px; color:#999; position:relative; z-index:9999;">
                     
@@ -162,149 +162,16 @@
               		<img src="images/comofun.png" />
               </div>
               
-              <!----------Caja 1----------> 
+              <!----------Filtros----------> 
               
-              <div class="cajaPregunta" >
-                     
-                     <div style="color:#eee; text-shadow:#000 1px 1px 5px; width:380px; line-height:34px; vertical-align:middle;" class="georgiaIt12 titBusq" > 
-                     		1. &iquest;A qu&eacute; quisieras dedicarte?
-                     </div>
-                     <form action="analizar.php" method="post" >
-                     	
-                        <input class="inputBusq" id="buscar" name="buscar" x-webkit-speech type="search" style="width:250px;" />
-                        
-                        <select class="selectBusq" id="cajaSeleccionar" onchange="seleccionar()" >
-                        <?php
-						
-                        $input = $buscar;
-                        $words = array(); 
-                        $sql = "SELECT rubro FROM info_empresa";
-                        $consulta = mysql_query($sql);
-                        validar_consulta($consulta);
-                        while($row = mysql_fetch_array($consulta) )
-                        {
-                            $palabras = $row["rubro"];
-                            $palabras = str_ireplace("."," ",$palabras);
-                            $palabras = str_ireplace(","," ",$palabras);
-                            $palabras = str_ireplace(";"," ",$palabras);
-                            
-                            $palabras = str_ireplace("("," ",$palabras);
-                            $palabras = str_ireplace(")"," ",$palabras);
-                            $palabras = explode(" ",$palabras);
-                            foreach($palabras as $val) 
-                            {
-                                if(strlen($val)>2)
-                                if(!in_array($val,$words))
-                                {
-                                    $words[] = $val;
-                                    //echo ucfirst(strtolower($val))." * ";
-                                }
-                            }
-                            
-                        }
-                                    
-                        $shortest = -1;
-                        $res = "";
-                        
-                        foreach ($words as $word) {
-                            $lev = levenshtein($input, $word);
-                            if ($lev == 0) {
-                                $closest = $word;
-                                $shortest = 0;
-                                break;
-                            }
-                            if ($lev <= $shortest || $shortest < 0) {
-                                $closest  = $word;
-                                $shortest = $lev;
-                            }
-                            if($lev>6) $res[] = $word;
-                        }
-                       
-					   sort($res); 
-						
-                       foreach ($res as $val)
-						{
-							if($cont!=0) echo ", ";
-							$cont++;
-							echo "<option>".ucfirst(strtolower(utf8_encode($val)))."</option>";
-						}
-						
-                        ?>
-
-                        </select>
-                        
-                        <script>
-							function seleccionar()
-							{ 
-								$("#buscar").val(document.getElementById('cajaSeleccionar').value);
-							}
-						</script>
-                     
-                        <input class="botonBusq" type="submit" value="Buscar" />
-                        
-                     </form>
-                     
-                     <div style="color:#eee; font-size:12px; height:17px; padding:5px;">
-                     	Introduce una actividad o un rubro, como por ejemplo. Salud, Educaci&oacute;n, Transporte, etc...
-                     </div>
-                     
-              </div>
+              <form action="analizar.php" method="post" >
+               
+				  <?php include("php_scripts/filtro_caja1.php"); ?>
+                  <?php include("php_scripts/filtro_caja2.php"); ?>
+                  <?php include("php_scripts/filtro_caja3.php"); ?>
               
-              <!------fin caja 1----------> 
-              <!----------Caja 2----------> 
-              
-              <div class="cajaPregunta2" >
-                     
-                     <div style="color:#eee; text-shadow:#000 1px 1px 5px; width:380px; line-height:34px; vertical-align:middle;" class="georgiaIt12 titBusq" > 
-                     		2. &iquest;Alguna direcci&oacute;n en especial?
-                     </div>
-                     <form onsubmit="cargarDireccion(); return false;" >
-                     	<input class="inputBusq" id="buscarDir" name="buscarDir" x-webkit-speech type="search" />
-                  	 	<input class="botonBusq" type="button" value="Buscar" onclick="cargarDireccion();" />
-                     </form>
-                     
-                     <script>
-					 	function cargarDireccion()
-						{
-							var url = 'mapa.php?d=1&dir='+$("#buscarDir").val()+', La Paz, La Paz, Bolivia';
-							var url2 = url + '&r=' + Math.random()*99999;
-							document.getElementById('geolocalizar').src = '';
-							document.getElementById('geolocalizar').src = url2;
-						}
-					 </script>
-                     
-                     <iframe id="geolocalizar" src="geolocalizar.php" scrolling="no" frameborder="0" style="border:0; margin-top:15px; width:950px; height:250px;"></iframe>
-                     
-                     <div style="color:#eee; font-size:12px; height:17px; padding:5px;">
-                     	Su ubicaci&oacute;n actual se determina autom&aacute;ticamente, pero puede corregirla arrastrando el marcador a cualquier parte del mapa.
-                     </div>
-                     <div id="geoPos" style="color:#fff; font-size:12px; height:17px; padding:5px;">16° 30' 19.393'' S 68° 7' 36.242'' O</div>
-                     
-                     <input type='text' id='markerLat' value='' />
-                     <input type='text' id='markerLng' value='' />
-                     
-                     <div id="geoPos2" style="color:#fff; font-size:12px; height:17px; padding:5px;"></div>
-                     
-              </div>
-              
-              <!------fin caja 2----------> 
-              <!----------Caja 3----------> 
-              
-              <div class="cajaPregunta3" >
-                     <div style="color:#eee; text-shadow:#000 1px 1px 5px; width:380px; line-height:34px; vertical-align:middle;" class="georgiaIt12 titBusq" > 
-                     		3. &iquest;Voy a tener suerte?
-                     </div>
-                     <form action="analizar.php" onsubmit="cargarResul()" method="post" >
-                  	 	<input type='hidden' id='buscar2' name="buscar" value='' />
-                        <input class="botonBusq" type="submit" value="Analizar mis oportunidades ahora!" style="width:400px;" />
-                     </form>
-                     
-                     <script>
-					 	function cargarResul(){ document.getElementById('buscar2').value = $("#buscar").val(); }
-					 </script>
-              </div>
-              
-              <!------fin caja 3----------> 
+              </form>
+              <!--------Fin-Filtros---------> 
               
               
               <div style="clear:both;"></div>

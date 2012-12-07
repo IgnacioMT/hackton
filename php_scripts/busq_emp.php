@@ -95,7 +95,7 @@
 		//header("Content-Type:text/html; charset=utf-8");
   		header("Content-Type: text/html; charset=iso-8859-1");
 		
-		$buscar = utf8_decode($_GET["buscar"]);
+		$buscar = utf8_decode(strip_tags(strtolower($_GET["buscar"])));						
 		$id = $_GET["id"];
 		
 		echo '<div style="clear:both; margin-top:50px; text-align:left; width:950px; margin:20px 0 10px 0; ">';
@@ -113,7 +113,7 @@
 			
 		if($id==1) $sql = generarConsultaOportunidades($buscar);
 		if($id==2) $sql = generarConsultaProveedores($buscar);
-		if($id==3) $sql = "SELECT * FROM info_empresa WHERE rubro like '%".$buscar."%' or nombre like '%".$buscar."%'";
+		if($id==3) $sql = "SELECT * FROM info_empresa WHERE LOWER(rubro) like '%".$buscar."%' or LOWER(nombre) like '%".$buscar."%'";
 			
 		$consulta = mysql_query($sql);
 		validar_consulta($consulta);
@@ -226,7 +226,7 @@
 			$res = "";
 			
 			foreach ($words as $word) {
-				$lev = levenshtein($input, $word);
+				$lev = levenshtein(strtolower($input), strtolower($word));
 				if ($lev == 0) {
 					$closest = $word;
 					$shortest = 0;
@@ -237,34 +237,35 @@
 					$shortest = $lev;
 				}	
 				
-				if($lev>15) $res[] = $word;
+				similar_text(strtolower($word),strtolower($buscar),$porcent);
+				if( $lev<5 && $lev>0 && $porcent>70 ) $res[] = $word;
 			}
 			
 			echo '<div style="clear:both; margin-top:30px; ">';
-				if ($shortest == 0) { echo "La b&uacute;squeda de ".$input." no obtuvo coincidencias.";}
-				else {
-				echo "La b&uacute;squeda de ".$input." no obtuvo coincidencias.<br /><br />";
-				
-				if(!empty($closest))
-				echo "<span class=\"rojo georgiaIt14\" style=\"font-size:16px;\">Talvez quizo decir:</span>
-				      <span class=\"plomo georgiaIt14\" style=\"font-size:18px;\">".ucfirst(strtolower($closest))."</span>";
-				echo "<br />";
-				$cont = 0;
-				
-				echo "<span class=\"plomo georgiaIt14\" style=\"font-size:16px;\">";
-					if(empty($res)) echo "No hay mas sugerencias para su b&uacute;squeda...";
-					else 
-					{
-						echo "<span class=\"rojo georgiaIt14\" style=\"font-size:16px;\">Sugerencias: </span>";
-						foreach ($res as $val)
-						{
-							if($cont!=0) echo ", ";
-							$cont++;
-							echo ucfirst(strtolower($val));
-						}
+				/*if ($shortest == 0) { echo "La b&uacute;squeda de ".$input." no obtuvo coincidencias.";}
+				else*/ {
+						echo "La b&uacute;squeda de ".$input." no obtuvo coincidencias.<br /><br />";
+						
+						if(!empty($closest))
+						echo "<span class=\"rojo georgiaIt14\" style=\"font-size:16px;\">Talvez quizo decir:</span>
+							  <span class=\"plomo georgiaIt14\" style=\"font-size:18px;\">".ucfirst(strtolower($closest))."</span>";
+						echo "<br />";
+						$cont = 0;
+						
+						echo "<span class=\"plomo georgiaIt14\" style=\"font-size:16px;\">";
+							if(empty($res)) echo "No hay mas sugerencias para su b&uacute;squeda...";
+							else 
+							{
+								echo "<span class=\"rojo georgiaIt14\" style=\"font-size:16px;\">Sugerencias: </span>";
+								foreach ($res as $val)
+								{
+									if($cont!=0) echo ", ";
+									$cont++;
+									echo ucfirst(strtolower($val));
+								}
+							}
+						echo "</span>";
 					}
-				echo "</span>";
-			}
 			echo "</div>";
 		}		
 		
