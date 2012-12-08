@@ -53,6 +53,7 @@
 			var myOptions = {
 				zoom: 14,
 				center: myLatlng,
+				scrollwheel: false,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
 			map = new google.maps.Map($("#map_canvas").get(0), myOptions);
@@ -87,24 +88,23 @@
 				parent.document.getElementById('markerLat').value = results[0].geometry.location.lat();
 			    parent.document.getElementById('markerLng').value = results[0].geometry.location.lng();
 			    parent.document.getElementById('geoPos').innerHTML = convertir_coordenadas(results[0].geometry.location.lat(),results[0].geometry.location.lng());
-				
+								
 				try{
 					parent.document.getElementById('markerLat').value = results[0].geometry.location.lat();
                 	parent.document.getElementById('markerLng').value = results[0].geometry.location.lng();
-					
+					parent.document.getElementById('geoPos').innerHTML = convertir_coordenadas(results[0].geometry.location.lat(),results[0].geometry.location.lng());
+				}catch(e){}
+				
 					google.maps.event.addListener(marker, 'dragend', function(event)
 					{				
-						  setInfoWindow('Usted se encuentra aqui!','Esta ubicación se utilizará en la etapa de análisis.',event.latLng.lat(),event.latLng.lng());							
 						  try{
-							   var url = "coord.php?lat="+event.latLng.lat()+"&lng="+event.latLng.lng();
-							   $("#coord").load(url);
+						  	setInfoWindow('Usted se encuentra aqui!','Esta ubicación se utilizará en la etapa de análisis.',event.latLng.lat(),event.latLng.lng());
+						  						
+						  	parent.document.getElementById('markerLat').value = event.latLng.lat();
+						  	parent.document.getElementById('markerLng').value = event.latLng.lng();
+						  	parent.document.getElementById('geoPos').innerHTML = convertir_coordenadas(event.latLng.lat(),event.latLng.lng());			
 						  }catch(e){}
-						
-						  parent.document.getElementById('markerLat').value = event.latLng.lat();
-						  parent.document.getElementById('markerLng').value = event.latLng.lng();
-						  parent.document.getElementById('geoPos').innerHTML = convertir_coordenadas(event.latLng.lat(),event.latLng.lng());			
 					});
-				}catch(e){};
 
 			} else {
 				alert("Ups! Lo sentimos pero no pudimos localizar la zona requerida.");
@@ -114,6 +114,7 @@
 </script>
 </head>
 <body>
+	<div id="coord"></div> 
     <div id="map_canvas" style="width:100%; height:100%;"></div>
 </body>
 </html>

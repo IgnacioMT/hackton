@@ -5,9 +5,11 @@
      </div>
     
         
-        <input class="inputBusq" id="buscar" name="buscar" x-webkit-speech type="search" style="width:250px;" />
+        <input class="inputBusq" id="buscar" name="buscar" x-webkit-speech type="search" style="width:300px;" />
         
-        <select class="selectBusq" id="cajaSeleccionar" onchange="seleccionar()" >
+        <select class="selectBusq" id="cajaSeleccionar" style="width:200px;" onchange="seleccionar()" >
+        
+        	<option>Seleccionar...</option>
         <?php
         
             $input = $buscar;
@@ -63,10 +65,10 @@
             }
         </script>
      
-        <input class="botonBusq" type="submit" value="Buscar" />
+        <!--input class="botonBusq" type="submit" value="Buscar" /-->
      
      <div style="color:#eee; font-size:12px; height:17px; padding:5px;">
-        Incluye palabras clave que desearias incluir en la b&uacute;squeda, como por ejemplo: Salud, Educaci&oacute;n, Transporte, Universidad, etc...
+        Introduce palabras clave que desearias incluir en la b&uacute;squeda, como por ejemplo: Salud, Educaci&oacute;n, Transporte, Universidad, etc...
      </div>
      
 </div>

@@ -43,122 +43,13 @@
               
               <img src="images/logo2.png" style="float:left; margin:-46px 0 0 -38px;" />
               
-              <div style="float:right; background-image: url(images/bglineas2.png); background-position:-10px -100px; background-repeat:no-repeat; text-align:left; background-color:#222; padding:20px 20px 20px 30px; margin-bottom:40px; color:#999; position:relative; z-index:9999;">
-                    
-					<?php if( !isset($_SESSION["id_usuario"]) ) { ?>		
-						
-                        <form action="php_scripts/login.php" method="post">
-                        	
-                            <div style="min-width:153px; height:40px; float:left; font-size:12px;" class="verde" > 
-                            	<span style="opacity:0.7;"> Correo electr&oacute;nico </span><br />
-                                <input id="logIn" type="text" name="login" style="width:145px; padding-left:3px; margin-right:5px; " />
-                                
-								<script>
-									  //onfocus="busqCrecer()" onblur="busqDecrecer()"
-                                      function busqCrecer(){ $('#logIn').animate({ 'width' : '180px' }); }
-                                      function busqDecrecer(){ $('#logIn').animate({ 'width' : '145px' }); }												
-                                </script>
-                            </div> 
-                            
-                            <div style="min-width:145px; height:40px;  float:left; font-size:12px;" class="verde"> 
-                            	<span style="opacity:0.7;">Contrase&ntilde;a</span> <br />
-                                <input type="password" name="pass" style="width:145px; padding-left:3px; margin-right:5px;" />
-                            </div>
-                            
-                            <div style="width:145px; height:40px;  float:left; font-size:12px;">
-                            	<span style="opacity:0.7;">&nbsp;</span> <br />
-                                <input type="submit" style="height:24px; font-family:Georgia; font-style:italic; margin-top:1px; cursor:pointer; border:#666 1px solid;" value="Iniciar sesi&oacute;n" />
-                            </div>
-                            
-                        </form>
-                        <br />
-                        <a style="line-height:24px;" onclick="$('#registro').slideToggle(); $('#recup').slideUp();" > Registrarse </a> |
-                        <a style="line-height:24px;" onclick="$('#recup').slideToggle(); $('#registro').slideUp();" > Olvido su contrase&ntilde;a? </a>
-                        
-                        <div id="registro" style="display:none; padding:10px 35px 10px 35px; margin-left:-30px; background-color:#eee; box-shadow:#666 1px 1px 8px; position:absolute; width:205px; height:290px; ">
-                        	
-                                <div id="reg" >
-                                    <div style="height:20px;"></div>
-                                    <span class="formTxt"> Nombre(s) </span>
-                                    <input id="regnombre" type="text" name="regnombre" style="width:205px; border:#666 1px solid;  padding-left:3px;" />
-                                    <span class="formTxt"> Apellidos </span>
-                                    <input id="regapellido" type="text" name="regapellido" style="width:205px; border:#666 1px solid;  padding-left:3px;" />
-                                    <span class="formTxt"> Correo Elect&oacute;nico </span>
-                                    <input id="regcorreo" type="text" name="regcorreo" style="width:205px; border:#666 1px solid;  padding-left:3px;" />
-                                    
-                                    <span class="formTxt"> Contrase&ntilde;a </span>
-                                    <input id="regpass1" type="password" name="regpass1" style="width:205px; border:#666 1px solid;  padding-left:3px;" />
-                                    <span class="formTxt"> Repita su contrase&ntilde;a </span>
-                                    <input id="regpass2" type="password" name="regpass2" style="width:205px; border:#666 1px solid;  padding-left:3px;" />
-                                    
-                                    <input type="button" onclick="registrarUsuario()" style="height:24px; cursor:pointer; margin:15px 0 0 0px; border:#666 1px solid;" value="Registrarse ahora!" />
-                                    
-                                    <script language="javascript"> 
-										  function registrarUsuario()
-										  {
-											  var url = "registro.php?nom="+encodeURI($('#regnombre').val())+
-											  			"&ap="+encodeURI($('#regapellido').val())+
-														"&cor="+encodeURI($('#regcorreo').val())+
-														"&pass1="+encodeURI($('#regpass1').val())+
-														"&pass2="+encodeURI($('#regpass1').val())+
-														"&r="+Math.random()*99999
-											  
-											  $("#reg").slideUp(500, function(){ $("#reg").load(url); $("#reg").slideDown(500); } );
-											  //$(window).load(function(){ $("#reg").load(url); });
-										  }
-									</script>
-                                    
-                                    <input type="reset" onclick="$('#registro').slideUp();" style="height:24px; cursor:pointer; margin:15px 0 0 0px; border:#666 1px solid;" value="Cancelar" />
-                                </div>
-                                
-                        </div>
-                        
-                        <div id="recup" style="display:none; padding:10px 35px 10px 35px; margin-left:80px; background-color:#eee; box-shadow:#666 1px 1px 8px; position:absolute; width:205px; height:220px; ">
-                        	
-                                <div style="height:20px;"></div>
-                                
-                                <span class="formTxt" style="color:#222;">Se le enviar&aacute;n instantaneamente las instrucciones a su correo electronico para recuperar el acceso a su cuenta.</span>
-                                
-                                <div style="height:10px;"></div>
-                                <span class="formTxt">Correo Elect&oacute;nico</span>
-                                <input type="text" name="regcorreo" style="width:205px; border:#666 1px solid;  padding-left:3px;" />
-                                
-                                <input type="button" onclick="recuperar();" style="height:24px; cursor:pointer; margin:10px 0 0 0px; border:#666 1px solid;" value="Recuperar contrase&ntilde;a" />
-                                
-                                <script language="javascript"> 
-                                	function recuperar()
-									{
-										alert('En pocos segundos recibira las instrucciones de recuperacion, porfavor revise su correo electronico.');
-										$('#recup').slideUp();
-									}
-                                </script>
-                                
-                                <input type="reset" onclick="$('#recup').slideUp();" style="height:24px; cursor:pointer; margin:10px 0 0 0px; border:#666 1px solid;" value="Cancelar" />
-                            
-                        </div>
-                        
-                    <?php if( isset($_GET["e"]) ) { ?> 
-                    	
-                        <br />
-                    	<span class="georgiaIt14" style="color:#900; line-height:24px;"> Nombre de usuario y/o contrase&ntilde;a incorrectos. </span>
-                    
-                    <?php }} else { ?> 
-                    	
-                        <div style="margin:0 50px 0 0;">
-                            <span class="verdana12">Bienvenido,</span> <span class="georgiaIt14" style="color:#999;"> <?= $_SESSION["nombre"]." ".$_SESSION["apellidos"] ?> </span>
-                            <br /><a class="verdana12" href="php_scripts/logout.php"> Cerrar Sesi&oacute;n </a>
-                        </div>
-                    
-					<?php } ?>
-                        
+              <?php include("php_scripts/formulario_login.php"); ?>              
+              
+              <div style="clear:both; text-align:left; margin-top:30px; height:150px; width:950px; margin:20px 0 10px 0; ">
+                    <img src="images/resultados.png" />
               </div>
               
-              <div style="clear:both; text-align:left; margin-top:30px; width:950px; margin:20px 0 10px 0; ">
-              	  <h1 style="font-family:Georgia, 'Times New Roman', Times, serif; font-style:italic;">
-				  	<?php if(isset($_POST["competitivo"])) echo "Analisis Competitivo"; ?>
-              	  	<?php if(isset($_POST["informativo"])) echo "Analisis Informativo"; ?>
-                  </h1>
-              </div>
+              
               
               <!----------Caja 1----------> 
               <form onsubmit="cargarResultados(); return false;" >
@@ -170,7 +61,7 @@
                      </div>
                      
                      	
-                        <input class="inputBusq" id="buscar" name="buscar" x-webkit-speech type="search"  value="<?php if(!empty($_POST["buscar"])) echo $_POST["buscar"]; ?>" style="width:250px;" />
+                        <input class="inputBusq" id="buscar" name="buscar" x-webkit-speech type="search"  value="<?php if(!empty($_POST["buscar"])) echo $_POST["buscar"]; ?>" style="width:300px;" />
                         
                         <script>
 							function seleccionar()
@@ -238,10 +129,8 @@
 
                         </select>
                         
-                        <input class="botonBusq" type="button" value="Buscar" onclick="cargarResultados();" />
-                     
                      <div style="color:#eee; font-size:12px; height:17px; padding:5px;">
-                     	Incluye palabras clave que desearias incluir en la b&uacute;squeda, como por ejemplo: Salud, Educaci&oacute;n, Transporte, Universidad, etc...
+                     	Introduce palabras clave que desearias incluir en la b&uacute;squeda, como por ejemplo: Salud, Educaci&oacute;n, Transporte, Universidad, etc...
                      </div>
                      
               </div>
@@ -255,11 +144,12 @@
               <!----------Caja 3----------> 
               
               <div class="cajaPregunta3" >
-                     <div style="color:#eee; text-shadow:#000 1px 1px 5px; width:380px; line-height:34px; vertical-align:middle;" class="georgiaIt12 titBusq" > 
-                     		3. &iquest;Voy a tener suerte?
+                     <div style="color:#eee; text-shadow:#000 1px 1px 5px; width:420px; line-height:34px; vertical-align:middle;" class="georgiaIt12 titBusq" > 
+                     		3. &iquest;Qu&eacute; tipo de an&aacute;lisis desea realizar?
                      </div>
                   	 
-                     <input class="botonBusq" type="button" value="Analizar mis oportunidades ahora!" style="width:400px;" onclick="cargarResultados();" />
+                     <input class="botonBusq" type="button" name="competitivo" value="An&aacute;lisis Competitivo" onclick="analisisCompetitivo();" style="width:200px;" />
+        			 <input class="botonBusq" type="button" name="informativo" value="An&aacute;lisis Informativo" onclick="analisisInformativo();" style="width:200px;" />
                      
               </div>
               
@@ -268,7 +158,7 @@
               
               
               <div style="clear:both;"></div>
-              
+              <img src="images/separador.png" style="width:1024px; float:left; clear:both;" />
               <script>					 
 				  function crecer(ide)
 				  { 
@@ -289,9 +179,11 @@
              <!----------------------------------------------------------------------------------------------------------------------->
               <div id="resultados" style="clear:both; margin:40px 0 30px 0; min-height:500px; width:960px; padding-left:10px;">
               		
-                    <div style="clear:both; text-align:left; margin-top:30px; height:150px; width:950px; margin:20px 0 10px 0; ">
-                        <img src="images/resultados.png" />
-                   </div>
+                    <!--0-------------------------------------->
+                    
+                    <div id="cargando0" style="display:none;"></div>
+                    <div id="cargarContenido0"></div>
+                    <div style="clear:both;"></div>
                     
                     <!--1------------------------------------->
                     
@@ -317,15 +209,32 @@
                     <!---------------------------------------->
                     
               </div>
+              
              
                 <?php header("Content-Type: text/html; charset=iso-8859-1"); ?> 
                          
 				<script>
-                    function cargarResultados()
+                    function analisisCompetitivo()
                     {
-                        cargarDireccion();
+                        //document.getElementById('TipoAnalisis').innerHTML = '<img src="images/compet.png">';
+						cargarDireccion();
+						var lat = $("#markerLat").val();
+						var lng = $("#markerLng").val();
+						
+						var url0 = "php_scripts/cargarmapa.php?lat="+lat+"&lng="+lng+"&id=1&buscar="+encodeURI($("#buscar").val()) + "&r=" + Math.random()*99999;
+                        $('#cargarContenido0').slideUp(250, function(){ 
+                            $('#cargando0').slideDown(250);
+                            try{ $('html,body').animate({ scrollTop: ($("#resultados").offset().top-35) }, 600); }catch(e){}
+                            $('#cargarContenido0').load(url0, function(){ 
+                                try{ $('html,body').animate({ scrollTop: ($("#resultados").offset().top-35) }, 600); }catch(e){}
+                                $('#cargando1').delay(1000).slideUp(250, function(){ 
+                                    $('#cargarContenido0').slideDown(600);
+                                }); 
+                            })
+                        });
+						
+						
 						var url1 = "php_scripts/busq_emp.php?id=1&buscar="+encodeURI($("#buscar").val()) + "&r=" + Math.random()*99999;
-                
                         $('#cargarContenido1').slideUp(250, function(){ 
                             $('#cargando1').slideDown(250);
                             try{ $('html,body').animate({ scrollTop: ($("#resultados").offset().top-35) }, 600); }catch(e){}
@@ -358,6 +267,29 @@
                         });
                         
                     }
+					
+					function analisisInformativo()
+					{
+						cargarDireccion();
+						var lat = $("#markerLat").val();
+						var lng = $("#markerLng").val();
+						
+						var url0 = "php_scripts/cargarmapa.php?lat="+lat+"&lng="+lng+"&id=2&buscar="+encodeURI($("#buscar").val()) + "&r=" + Math.random()*99999;
+                        $('#cargarContenido0').slideUp(250, function(){ 
+                            $('#cargando0').slideDown(250);
+                            try{ $('html,body').animate({ scrollTop: ($("#resultados").offset().top-35) }, 600); }catch(e){}
+                            $('#cargarContenido0').load(url0, function(){ 
+                                try{ $('html,body').animate({ scrollTop: ($("#resultados").offset().top-35) }, 600); }catch(e){}
+                                $('#cargando1').delay(1000).slideUp(250, function(){ 
+                                    $('#cargarContenido0').slideDown(600);
+                                }); 
+                            })
+                        });
+						
+						$('#cargarContenido1').slideUp(250);
+						$('#cargarContenido2').slideUp(250);
+						$('#cargarContenido3').slideUp(250);
+					}
                 </script>
               <!----------------------------------------------------------------------------------------------------------------------->
               
@@ -390,8 +322,10 @@
    </center>
 </body>
 	<?php if(isset($_POST["buscar"])){ ?>
-		<script> cargarResultados(); </script>
+		<?php if(isset($_POST["competitivo"])) echo "<script> analisisCompetitivo(); </script>"; ?>
+    	<?php if(isset($_POST["informativo"])) echo "<script> analisisInformativo(); </script>"; ?>
     <?php } ?>
+
 </html>
 <?php
   //if($_SESSION["url"]!=get_url()) $_SESSION["url"] = get_url();

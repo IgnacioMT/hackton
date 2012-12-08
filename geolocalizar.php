@@ -41,6 +41,7 @@
               infowindow = new google.maps.InfoWindow({
                 map: map,
                 position: pos,
+				scrollwheel: false,
                 content: '<div class="marker"><span class="rojo">Usted se encuentra aqui!</span> <span class="verdana12 plomo">Esta ubicación se utilizará en la etapa de análisis.</span></div>'
               });
 
@@ -52,18 +53,22 @@
 				 draggable: true,
 				 title: 'Su ubicacion'
 			  });
-			
+			  
+			  try{
+				  parent.document.getElementById('markerLat').value = pos.lat();
+				  parent.document.getElementById('markerLng').value = pos.lng();
+				  parent.document.getElementById('geoPos').innerHTML = convertir_coordenadas(pos.lat(),pos.lng());
+			  }catch(e){}
+			  
 			  google.maps.event.addListener(marker, 'dragend', function(event)
 			  {				
-				  setInfoWindow('Usted se encuentra aqui!','Esta ubicación se utilizará en la etapa de análisis.',event);							
 				  try{
-					   var url = "coord.php?lat="+event.latLng.lat()+"&lng="+event.latLng.lng();
-					   $("#coord").load(url);
-				  }catch(e){}
-				
-				  parent.document.getElementById('markerLat').value = event.latLng.lat();
-                  parent.document.getElementById('markerLng').value = event.latLng.lng();
-				  parent.document.getElementById('geoPos').innerHTML = convertir_coordenadas(event.latLng.lat(),event.latLng.lng());			
+				  	setInfoWindow('Usted se encuentra aqui!','Esta ubicación se utilizará en la etapa de análisis.',event);							
+				  
+				  	parent.document.getElementById('markerLat').value = event.latLng.lat();
+                  	parent.document.getElementById('markerLng').value = event.latLng.lng();
+				  	parent.document.getElementById('geoPos').innerHTML = convertir_coordenadas(event.latLng.lat(),event.latLng.lng());			
+				  }catch(e){};
 			  });			
               map.setCenter(pos);
 		}, function(){ handleNoGeolocation(true); });
@@ -105,16 +110,15 @@
 					
 				  google.maps.event.addListener(marker, 'dragend', function(event)
 				  {
-					  parent.document.getElementById('markerLat').value = event.latLng.lat();
-					  parent.document.getElementById('markerLng').value = event.latLng.lng();
-					  parent.document.getElementById('geoPos').innerHTML = convertir_coordenadas(event.latLng.lat(),event.latLng.lng());
-					  
-					  setInfoWindow('Usted se encuentra aqui!','Esta ubicación se utilizará en la etapa de análisis.',event);
-					  //guardar en $_session		
-					  try{ var url = "coord.php?lat="+event.latLng.lat()+"&lng="+event.latLng.lng(); $("#coord").load(url); }catch(e){}				
-				  });
-				
+					  try{
+						  parent.document.getElementById('markerLat').value = event.latLng.lat();
+						  parent.document.getElementById('markerLng').value = event.latLng.lng();
+						  parent.document.getElementById('geoPos').innerHTML = convertir_coordenadas(event.latLng.lat(),event.latLng.lng());
 						  
+						  setInfoWindow('Usted se encuentra aqui!','Esta ubicación se utilizará en la etapa de análisis.',event);
+					  }catch(e){}
+				  });
+					  
 				  map.setCenter(pos);
 				  map.setZoom(16);
 				  

@@ -11,6 +11,11 @@ function pixelesDisponiblesY() {
 	return myHeight;
 }
 
+function pause(milliseconds) {
+	var dt = new Date();
+	while ((new Date()) - dt <= milliseconds){}
+}
+
 function pixelesDisponiblesX() {
 	var myWidth = 0;
 	if( typeof( window.innerWidth ) == 'number' ) {

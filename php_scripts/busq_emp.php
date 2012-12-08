@@ -148,33 +148,10 @@
 					echo '<div class="georgiaIt12 plomo" style="text-align:left; margin:5px 5px 5px 10px;">Direcci&oacute;n: </div>';
 					echo '<div class="verdana12" style="text-align:left; margin:5px 5px 5px 10px; color:#222;">'.$row["direccion"]."</div>";
 					
-					$aux = explode(" ", $row["direccion"]);
-					
-					$dir = "";
-					$band = 0;
-					foreach( $aux as $val )
-					{
-						if($band == 1) { $band = 0; continue; }
-						if( strtolower($val) == "zona" || strtolower($val) == "z." ){ $band = 1; continue; }
-						if( strtolower($val) == "v." ){ $band = 1; continue; }
-						
-						if( substr($val,-1) == "." && strtolower($val)!="av." ) continue;
-						if( strrchr($val, '#') ) continue;
-						if( strtolower($val) == "esq.") break;
-						if( strtolower($val) == "calle") continue;
-						if( strtolower($val) == "torre") break;
-						if( strtolower($val) == "torres") break;
-						if( strtolower($val) == "mezanine") continue;
-						if( strtolower($val) == "n") continue;
-						if( strtolower($val[0]) == 'n' && strlen($val)<=3 ) continue;
-						if( strtolower($val[0]) == 'n' && strtolower($val[2]) == '.' ) continue;
-						//if( strtolower($val[1]) == '.' ) continue;
-						
-						$dir .= $val." ";
-					}
+					$dir = arreglarDireccion($row["direccion"]);
 					
 					echo '<div style="margin:5px 0 10px 0;">';
-						echo '<a onclick="openBox(\'mapa.php?dir='.$dir.'\');">Geolocalizar Zona (Adivinar)</a>';
+						echo '<a onclick="openBox(\'mapa.php?dir='.$dir.'&ciudad='.$row["ciudad"].'&dep='.$row["departamento"].'&pais='.$row["pais"].'\');">Geolocalizar Zona (Adivinar)</a>';
 					echo '</div>';
 					
 				echo "</div>";
