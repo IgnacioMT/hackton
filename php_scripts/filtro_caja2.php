@@ -50,7 +50,7 @@
      </div>
      <div id="geoPos" style="color:#fff; font-size:12px; height:17px; padding:5px;"></div>
      
-     <input type='text' name="markerLat1" id='markerLat' value='<?php if(isset($_POST["markerLat1"])) echo $_POST["markerLat1"]; ?>' />
-     <input type='text' name="markerLng1" id='markerLng' value='<?php if(isset($_POST["markerLng1"])) echo $_POST["markerLng1"]; ?>' />
+     <input type='hidden' name="markerLat1" id='markerLat' value='<?php if(isset($_POST["markerLat1"])) echo $_POST["markerLat1"]; ?>' />
+     <input type='hidden' name="markerLng1" id='markerLng' value='<?php if(isset($_POST["markerLng1"])) echo $_POST["markerLng1"]; ?>' />
      
 </div>
